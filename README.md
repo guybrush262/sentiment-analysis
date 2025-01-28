@@ -24,3 +24,5 @@ The model analyzes three different data inputs:
 3) Conversation, and you need:
    - OpenAI Conversation integration
    - Assist configured
+
+In any case also Variable integration should be installed.
