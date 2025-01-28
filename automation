@@ -1,0 +1,153 @@
+alias: Assistente_IA-Sentiment Analysis
+description: ""
+triggers:
+  - trigger: state
+    entity_id:
+      - input_text.sentiment_analysis_input
+    id: input testo
+  - trigger: conversation
+    command: "{question}"
+    id: conversazione
+  - trigger: state
+    entity_id:
+      - binary_sensor.cameretta_person_occupancy
+    to: "on"
+    id: input video_cameretta
+conditions: []
+actions:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id:
+              - input testo
+          - condition: state
+            entity_id: input_select.sentiment_analysis_mode
+            state: Testo
+        sequence:
+          - action: var.set
+            data:
+              entity_id: var.sentiment_analysis_result_text
+              value: ""
+          - action: var.set
+            data:
+              entity_id: var.sentiment_analysis_intensity_text
+              value: ""
+          - action: rest_command.sentiment_analysis
+            response_variable: emotion_text
+            data:
+              input_content: "{{ states('input_text.sentiment_analysis_input') }}"
+          - action: var.set
+            data:
+              entity_id: var.sentiment_analysis_result_text
+              value: >-
+                {% set result =
+                emotion_text['content']['choices'][0]['message']['content'] %}
+                {{ result.split(':')[0] }}
+          - action: var.set
+            data:
+              entity_id: var.sentiment_analysis_intensity_text
+              value: >-
+                {% set result =
+                emotion_text['content']['choices'][0]['message']['content'] %}
+                {{ result.split(':')[1] | int }}
+        alias: Testo
+      - conditions:
+          - condition: trigger
+            id:
+              - conversazione
+          - condition: state
+            entity_id: input_select.sentiment_analysis_mode
+            state: Conversazione
+        sequence:
+          - action: var.set
+            data:
+              entity_id: var.sentiment_analysis_result_conversation
+              value: ""
+          - action: var.set
+            data:
+              entity_id: var.sentiment_analysis_intensity_conversation
+              value: ""
+          - action: conversation.process
+            metadata: {}
+            data:
+              agent_id: conversation.openai_jarvis
+              text: "{{ trigger.slots.question }}"
+          - action: input_text.set_value
+            metadata: {}
+            data:
+              value: "{{ trigger.slots.question }}"
+            target:
+              entity_id: input_text.assist_conversation_input
+          - action: rest_command.sentiment_analysis
+            response_variable: emotion_conv
+            data:
+              input_content: "{{ states('input_text.assist_conversation_input') }}"
+          - action: var.set
+            data:
+              entity_id: var.sentiment_analysis_result_conversation
+              value: >-
+                {% set result =
+                emotion_conv['content']['choices'][0]['message']['content'] %}
+                {{ result.split(':')[0] }}
+          - action: var.set
+            data:
+              entity_id: var.sentiment_analysis_intensity_conversation
+              value: >-
+                {% set result =
+                emotion_conv['content']['choices'][0]['message']['content'] %}
+                {{ result.split(':')[1] | int }}
+        alias: Conversazione
+      - conditions:
+          - condition: trigger
+            id:
+              - input video_cameretta
+          - condition: state
+            entity_id: input_select.sentiment_analysis_mode
+            state: Video
+        sequence:
+          - action: var.set
+            data:
+              entity_id: var.sentiment_analysis_result_video
+              value: ""
+          - action: var.set
+            data:
+              entity_id: var.sentiment_analysis_intensity_video
+              value: ""
+          - action: llmvision.stream_analyzer
+            metadata: {}
+            data:
+              duration: 5
+              max_frames: 3
+              include_filename: false
+              target_width: 1280
+              max_tokens: 100
+              temperature: 0.2
+              provider: 01JC5KVKTTSC50E4NSW4WZ37SR
+              message: >-
+                Analizza le immagini della telecamera e classifica l'emozione
+                predominante provata dalla persona presente, usando una sola tra
+                le seguenti parole: 'Gioia', 'Tristezza', 'Rabbia', 'Paura',
+                'Sorpresa', 'Disgusto'. Inoltre, assegna un valore numerico da 1
+                a 5 all'emozione identificata che ne rappresenta l'intensità.
+                Scala dell'intensità (1-5): 1 - Molto Bassa: L'emozione è appena
+                percepibile o vaga. 2 - Bassa: L'emozione è presente, ma non
+                dominante. 3 - Moderata: L'emozione è evidente, ma non estrema.
+                4 - Alta: L'emozione è intensa e domina il tono del messaggio. 5
+                - Molto Alta: L'emozione è estremamente intensa e predominante. 
+                Rispondi esclusivamente nel formato 'Emozione:Intensità',
+                esempio 'Gioia:3'. Non includere altro nella risposta. Se le
+                immagini sono senza persone o non analizzalibili, rispondi
+                'Nessun input valido fornito'.
+              image_entity:
+                - camera.cameretta
+            response_variable: emotion_video
+          - action: var.set
+            data:
+              entity_id: var.sentiment_analysis_result_video
+              value: "{{ emotion_video.response_text.split(':')[0] }}"
+          - action: var.set
+            data:
+              entity_id: var.sentiment_analysis_intensity_video
+              value: "{{ emotion_video.response_text.split(':')[1].strip() }}"
+        alias: Video - cameretta
+mode: single
