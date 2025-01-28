@@ -1,4 +1,4 @@
-# Ssentiment Analysis in Home Assistant
+# Sentiment Analysis in Home Assistant
 
 Integrate a model for language analysis to interpret people's mood.
 To this end, ChatGPT can analyze text/video to identify feelings in terms of both polarity (positive, negative, or neutral) and detected emotion (joy, sadness, anger, fear, surprise, disgust), as well as calculate the magnitude of emotions (by assigning a numerical value to them).
@@ -14,3 +14,7 @@ In order to do that you need:
 - A camera (if you want to perform video analysis)
 - Configured Assist (if you want to perform the conversation analysis)
   
+The model is composed by:
+- sensors
+- automation
+- lovelace card
