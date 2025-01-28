@@ -10,8 +10,3 @@ cards:
         name: Emozione
       - entity: sensor.intensita_sentiment_analysis
         name: Intensità
-  - type: markdown
-    content: |-
-      <small>Input conversazione</small>
-      {{states("input_text.assist_conversation_input")}}
-      ___
