@@ -27,6 +27,6 @@ The model analyzes three different data inputs:
    - A configured camera
 3) Conversation, and you would need:
    - OpenAI Conversation integration
-   - A configured Assist
+   - A configured Assist instance
 
 In any case also Variable integration should be installed.
