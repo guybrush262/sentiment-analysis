@@ -1,0 +1,17 @@
+type: custom:vertical-stack-in-card
+cards:
+  - type: entities
+    entities:
+      - entity: input_select.sentiment_analysis_mode
+        name: Modalità
+      - entity: input_text.sentiment_analysis_input
+        name: Input testo
+      - entity: sensor.sentiment_analysis_result
+        name: Emozione
+      - entity: sensor.intensita_sentiment_analysis
+        name: Intensità
+  - type: markdown
+    content: |-
+      <small>Input conversazione</small>
+      {{states("input_text.assist_conversation_input")}}
+      ___
