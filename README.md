@@ -8,13 +8,21 @@ In this way, the result of Sentiment Analysis can be used together with other in
     - Adjust the tone of Assist's responses
     - Suggest the most appropriate recipe (e.g., comfort food vs. processed food)
     - Choose the type of TV program to watch
-    - Combine different inputs together: audio, video, wearable devices (e.g., for heart rate) and sensors (e.g., hours slept at night) for cross-analysis
+    - Combine different inputs together, e.g. with wearable devices for heart rate monitoring or hours slept at night for cross-analysis
+    - Create emotional profiles and identify recurring patterns
 
-In order to do that you need:
-- A camera (if you want to perform video analysis)
-- Configured Assist (if you want to perform the conversation analysis)
-  
 The model is composed by:
 - sensors
 - automation
 - lovelace card
+
+The model analyzes three different data inputs:
+1) Text
+2) Video
+   You need:
+   - LLM Vision integration
+   - A camera (if you want to perform video analysis)
+3) Conversation
+   Youy need:
+   - OpenAI Conversation integration
+   - Assist configured
