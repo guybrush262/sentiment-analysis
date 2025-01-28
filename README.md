@@ -16,13 +16,17 @@ The model is composed by:
 - automation
 - lovelace card
 
+In order to create the sensors, you would need:
+- OpenAI API key
+- Variable integration (refer to: https://github.com/snarky-snark/home-assistant-variables)
+
 The model analyzes three different data inputs:
 1) Text
-2) Video, and you need:
+2) Video, and you would need:
    - LLM Vision integration
-   - A camera (if you want to perform video analysis)
-3) Conversation, and you need:
+   - A configured camera
+3) Conversation, and you would need:
    - OpenAI Conversation integration
-   - Assist configured
+   - A configured Assist
 
 In any case also Variable integration should be installed.
