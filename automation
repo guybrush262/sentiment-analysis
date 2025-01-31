@@ -1,13 +1,13 @@
-alias: Assistente_IA-Sentiment Analysis
+alias: Assistant_AI-Sentiment Analysis
 description: ""
 triggers:
   - trigger: state
     entity_id:
       - input_text.sentiment_analysis_input
-    id: input testo
+    id: input text
   - trigger: conversation
     command: "{question}"
-    id: conversazione
+    id: conversation
   - trigger: state
     entity_id:
       - binary_sensor.cameretta_person_occupancy
@@ -19,10 +19,10 @@ actions:
       - conditions:
           - condition: trigger
             id:
-              - input testo
+              - input text
           - condition: state
             entity_id: input_select.sentiment_analysis_mode
-            state: Testo
+            state: Text
         sequence:
           - action: var.set
             data:
@@ -50,14 +50,14 @@ actions:
                 {% set result =
                 emotion_text['content']['choices'][0]['message']['content'] %}
                 {{ result.split(':')[1] | int }}
-        alias: Testo
+        alias: Text
       - conditions:
           - condition: trigger
             id:
               - conversazione
           - condition: state
             entity_id: input_select.sentiment_analysis_mode
-            state: Conversazione
+            state: conversation
         sequence:
           - action: var.set
             data:
@@ -96,7 +96,7 @@ actions:
                 {% set result =
                 emotion_conv['content']['choices'][0]['message']['content'] %}
                 {{ result.split(':')[1] | int }}
-        alias: Conversazione
+        alias: conversation
       - conditions:
           - condition: trigger
             id:
