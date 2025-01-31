@@ -26,105 +26,105 @@ input_text:
     max: 255
 # Conversation input
   assist_conversation_input:
-    name: "Input conversazione Assist"
+    name: "Input conversation Assist"
     initial: ""
     max: 255
 
 input_select:
 # Input to analize
   sentiment_analysis_mode:
-    name: Modalità Sentiment Analysis
+    name: Mode Sentiment Analysis
     options:
-      - Conversazione
-      - Testo
+      - Conversation
+      - Text
       - Video
-    initial: Testo
+    initial: Text
     icon: mdi:tune
 
 var:
 # Emotion variable for text output
   sentiment_analysis_result_text:
-    friendly_name: 'Risultati Sentiment Analysis_testo'
-    initial_value: 'Nessun input valido fornito'
+    friendly_name: 'Result Sentiment Analysis_text'
+    initial_value: 'No valid input'
     icon: mdi:emoticon
     restore: true
 # Emotion variable for video output
   sentiment_analysis_result_video:
-    friendly_name: 'Risultati Sentiment Analysis_video'
-    initial_value: 'Nessun input valido fornito'
+    friendly_name: 'Result Sentiment Analysis_video'
+    initial_value: 'No valid input'
     icon: mdi:emoticon
     restore: true
 # Emotion variable for conversation output
   sentiment_analysis_result_conversation:
-    friendly_name: 'Risultati Sentiment Analysis_conversazione'
-    initial_value: 'Nessun input valido fornito'
+    friendly_name: 'Result Sentiment Analysis_conversation'
+    initial_value: 'No valid input'
     icon: mdi:emoticon
     restore: true
 # Intensity variable for text output
   sentiment_analysis_intensity_text:
-    friendly_name: 'Intensità emozione testo'
-    initial_value: 'Nessun input valido fornito'
+    friendly_name: 'Intensity emozione text'
+    initial_value: 'No valid input'
     icon: mdi:gauge
     restore: true
 # Intensity variable for video output
   sentiment_analysis_intensity_video:
-    friendly_name: 'Intensità emozione video'
-    initial_value: 'Nessun input valido fornito'
+    friendly_name: 'Intensity emozione video'
+    initial_value: 'No valid input'
     icon: mdi:gauge
     restore: true
 # Intensity variable for conversation output
   sentiment_analysis_intensity_conversation:
-    friendly_name: 'Intensità emozione conversazione'
-    initial_value: 'Nessun input valido fornito'
+    friendly_name: 'Intensity emozione conversation'
+    initial_value: 'No valid input'
     icon: mdi:gauge
     restore: true
 
 template:
 # Sensor for results output
   - sensor:
-      - name: "Risultati Sentiment Analysis"
+      - name: "Result Sentiment Analysis"
         unique_id: sentiment_analysis_result
         state: >
           {% set mode = states('input_select.sentiment_analysis_mode') %}
-          {% if mode == 'Testo' %}
+          {% if mode == 'Text' %}
             {{ states('var.sentiment_analysis_result_text') }}
           {% elif mode == 'Video' %}
             {{ states('var.sentiment_analysis_result_video') }}
-          {% elif mode == 'Conversazione' %}
+          {% elif mode == 'Conversation' %}
             {{ states('var.sentiment_analysis_result_conversation') }}
           {% endif %}
         icon: >
           {% set mode = states('input_select.sentiment_analysis_mode') %}
           {% set state = 
-            states('var.sentiment_analysis_result_text') if mode == 'Testo' else 
+            states('var.sentiment_analysis_result_text') if mode == 'Text' else 
             states('var.sentiment_analysis_result_video') if mode == 'Video' else 
             states('var.sentiment_analysis_result_conversation') %}
-          {% if state == 'Gioia' %}
+          {% if state == 'Joy' %}
             mdi:emoticon-happy
-          {% elif state == 'Tristezza' %}
+          {% elif state == 'Sadness' %}
             mdi:emoticon-sad
-          {% elif state == 'Rabbia' %}
+          {% elif state == 'Anger' %}
             mdi:emoticon-angry
-          {% elif state == 'Paura' %}
+          {% elif state == 'Fear' %}
             mdi:emoticon-frown
-          {% elif state == 'Sorpresa' %}
+          {% elif state == 'Surprise' %}
             mdi:emoticon-surprised
-          {% elif state == 'Disgusto' %}
+          {% elif state == 'Disgust' %}
             mdi:emoticon-confused
           {% else %}
             mdi:emoticon-neutral
           {% endif %}
 
 # Sensor for intensity output
-      - name: "Intensità Sentiment Analysis"
+      - name: "Intensity Sentiment Analysis"
         unique_id: sentiment_analysis_intensity
         state: >
           {% set mode = states('input_select.sentiment_analysis_mode') %}
-          {% if mode == 'Testo' %}
+          {% if mode == 'Tezt' %}
             {{ states('var.sentiment_analysis_intensity_text') }}
           {% elif mode == 'Video' %}
             {{ states('var.sentiment_analysis_intensity_video') }}
-          {% elif mode == 'Conversazione' %}
+          {% elif mode == 'Conversation' %}
             {{ states('var.sentiment_analysis_intensity_conversation') }}
           {% endif %}
         icon: mdi:gauge
